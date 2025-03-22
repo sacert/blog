@@ -1,6 +1,8 @@
 /* Base Styles */
 :root {
     --primary-color: #3498db;
+    --tag-color: #2980b9;
+    --tag-hover-color: #1c638f;
     --text-color: #333;
     --bg-color: #fff;
     --light-gray: #f4f4f4;
@@ -22,9 +24,72 @@ body {
 
 .container {
     width: 100%;
-    max-width: 800px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+/* Layout with Sidebar */
+.main-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.content {
+    flex: 1 1 600px;
+}
+
+.sidebar {
+    flex: 0 1 250px;
+}
+
+.sidebar-section {
+    background-color: var(--light-gray);
+    padding: 1.5rem;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+}
+
+.sidebar-section h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Tags */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    display: inline-block;
+    background-color: var(--tag-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.tag:hover {
+    background-color: var(--tag-hover-color);
+}
+
+.tag.active {
+    background-color: var(--tag-hover-color);
+    font-weight: bold;
+}
+
+.post-tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-left: 1rem;
 }
 
 /* Header */
@@ -160,5 +225,13 @@ footer {
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
+    }
+    
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        order: -1;
     }
 }

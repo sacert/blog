@@ -1,5 +1,7 @@
 # Markdown Cheatsheet
 
+Tags: markdown, reference, writing, tutorial
+
 Markdown is a lightweight markup language that allows you to write formatted content using plain text. Here's a quick reference guide.
 
 ## Basic Syntax

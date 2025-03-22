@@ -1,5 +1,7 @@
 # Getting Started with Golang
 
+Tags: golang, tutorial, programming
+
 Go, also known as Golang, is an open-source programming language designed at Google. Let's explore how to get started with Go development.
 
 ## Installation

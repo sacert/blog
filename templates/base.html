@@ -19,9 +19,26 @@
         </div>
     </header>
     
-    <main class="container">
-        {{ template "content" . }}
-    </main>
+    <div class="container main-container">
+        <main class="content">
+            {{ template "content" . }}
+        </main>
+        
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Tags</h3>
+                <div class="tags">
+                    {{ if .AllTags }}
+                        {{ range .AllTags }}
+                            <a href="/tag/{{ . }}" class="tag {{ if eq . $.ActiveTag }}active{{ end }}">{{ . }}</a>
+                        {{ end }}
+                    {{ else }}
+                        <p>No tags found</p>
+                    {{ end }}
+                </div>
+            </div>
+        </aside>
+    </div>
     
     <footer>
         <div class="container">
