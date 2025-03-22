@@ -1,0 +1,24 @@
+{{ define "content" }}
+<section class="posts">
+    <h2>Latest Posts</h2>
+    
+    {{ if .Posts }}
+        {{ range .Posts }}
+        <article class="post-summary">
+            <h3><a href="/post/{{ .Slug }}">{{ .Title }}</a></h3>
+            <div class="post-meta">
+                <time datetime="{{ .PublishDate.Format "2006-01-02" }}">
+                    {{ .PublishDate.Format "January 2, 2006" }}
+                </time>
+            </div>
+            <div class="post-summary">
+                {{ .Summary }}
+            </div>
+            <a href="/post/{{ .Slug }}" class="read-more">Read more &rarr;</a>
+        </article>
+        {{ end }}
+    {{ else }}
+        <p>No posts found.</p>
+    {{ end }}
+</section>
+{{ end }}
