@@ -1,3 +1,22 @@
+# Go Markdown Blog
+
+[![Build Status](https://github.com/sacert/blog/actions/workflows/test.yml/badge.svg)](https://github.com/sacert/blog/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/sacert/blog/branch/main/graph/badge.svg)](https://codecov.io/gh/sacert/blog)
+
+A simple blog built with Go that uses Markdown files for blog posts. Features tag support and Docker deployment.
+
+## Features
+
+- 📝 Markdown content for easy writing
+- 🏠 Home page listing all posts
+- 📄 Individual post pages
+- 🏷️ Tag support for categorizing posts
+- 🐳 Docker support for easy deployment
+- 🛠️ GitHub Actions workflow for automated deployment
+- 🧪 Comprehensive testing suite
+- 🎨 Responsive design
+- 🚀 Fast and lightweight
+
 ## Testing
 
 The blog includes a comprehensive testing suite with unit tests, integration tests, and benchmarks.
@@ -56,49 +75,6 @@ Add the following secrets to your GitHub repository:
 ### Manual Deployment
 
 If needed, you can also manually trigger the deployment from the GitHub Actions tab in your repository.
-
-# Go Markdown Blog
-
-A simple blog built with Go that uses Markdown files for blog posts. Features tag support and Docker deployment.
-
-## Features
-
-- 📝 Markdown content for easy writing
-- 🏠 Home page listing all posts
-- 📄 Individual post pages
-- 🏷️ Tag support for categorizing posts
-- 🐳 Docker support for easy deployment
-- 🛠️ GitHub Actions workflow for automated deployment
-- 🧪 Comprehensive testing suite
-- 🎨 Responsive design
-- 🚀 Fast and lightweight
-
-### Running with Docker
-
-The blog can also be run using Docker:
-
-```bash
-# Build and start the container
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop the container
-docker-compose down
-```
-
-Alternatively, you can build and run the Docker container manually:
-
-```bash
-# Build the Docker image
-docker build -t go-markdown-blog .
-
-# Run the container
-docker run -p 8080:8080 -v $(pwd)/content:/app/content go-markdown-blog
-```
-
-The blog will be available at http://localhost:8080
 
 ## Project Structure
 
@@ -173,14 +149,45 @@ chmod +x dev.sh
 
 The blog will be available at http://localhost:8080 in both modes. In development mode, the server will automatically reload when you make changes to your files.
 
+### Running with Docker
+
+The blog can also be run using Docker:
+
+```bash
+# Build and start the container
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the container
+docker-compose down
+```
+
+Alternatively, you can build and run the Docker container manually:
+
+```bash
+# Build the Docker image
+docker build -t go-markdown-blog .
+
+# Run the container
+docker run -p 8080:8080 -v $(pwd)/content:/app/content go-markdown-blog
+```
+
+The blog will be available at http://localhost:8080
+
 ### Creating Blog Posts
 
 Create new `.md` files in the `content` directory. The first line of each file should be a level 1 heading (`# Title`) which will be used as the post title.
+
+To add tags to a post, include a line with the format `Tags: tag1, tag2, tag3` right after the title.
 
 Example:
 
 ```markdown
 # My New Post
+
+Tags: golang, tutorial, web
 
 This is the content of my new post.
 

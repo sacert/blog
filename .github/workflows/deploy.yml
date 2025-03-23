@@ -21,11 +21,17 @@ jobs:
       - name: Download dependencies
         run: go mod download
       
-      - name: Run tests
-        run: go test ./... -v
+      - name: Run tests with coverage
+        run: |
+          go test ./... -race -coverprofile=coverage.out -covermode=atomic
+          go tool cover -func=coverage.out
       
-      - name: Run benchmarks
-        run: go test -bench=. -benchmem
+      - name: Generate coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.out
+          fail_ci_if_error: false
+          verbose: true
       
       - name: Build application
         run: go build -o blog-app .
