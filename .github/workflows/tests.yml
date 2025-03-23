@@ -1,11 +1,10 @@
-name: Run Tests
+name: Reusable Tests
 
 on:
-  pull_request:
-  push:
-     branches:
-       - 'main'
-  workflow_dispatch:             # Allow manual triggering
+  workflow_call:
+    secrets:
+      CODECOV_TOKEN:
+        required: false
 
 jobs:
   test:
