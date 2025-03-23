@@ -17,7 +17,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Set up Go
         uses: actions/setup-go@v4
@@ -31,16 +31,16 @@ jobs:
         run: go build -o blog-app .
       
       - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
+        uses: shimataro/ssh-key-action@v2.5.1
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
       
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       
       - name: Build and export Docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           load: true  # Load the image locally
@@ -61,7 +61,7 @@ jobs:
           scp -o StrictHostKeyChecking=no content.tar.gz ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }}:/tmp/
       
       - name: Deploy on DigitalOcean Droplet
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER }}
