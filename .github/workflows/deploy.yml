@@ -1,0 +1,70 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches: [ main ]  # Change this to your main branch name if different (e.g., master)
+  workflow_dispatch:    # Allows manual triggering of the workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'  # Use the Go version you're developing with
+      
+      - name: Build application
+        run: go build -o blog-app .
+      
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Build and export Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          load: true  # Load the image locally
+          tags: go-markdown-blog:latest
+      
+      - name: Save Docker image
+        run: docker save go-markdown-blog:latest | gzip > go-markdown-blog.tar.gz
+      
+      - name: Copy Docker image to DigitalOcean Droplet
+        run: |
+          scp -o StrictHostKeyChecking=no go-markdown-blog.tar.gz ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }}:/tmp/
+      
+      - name: Deploy on DigitalOcean Droplet
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Load the Docker image
+            docker load < /tmp/go-markdown-blog.tar.gz
+            
+            # Stop and remove the existing container if it exists
+            docker stop go-markdown-blog || true
+            docker rm go-markdown-blog || true
+            
+            # Run the new container
+            docker run -d \
+              --name go-markdown-blog \
+              -p 80:8080 \
+              -v /opt/blog/content:/app/content \
+              --restart unless-stopped \
+              go-markdown-blog:latest
+            
+            # Clean up
+            rm /tmp/go-markdown-blog.tar.gz

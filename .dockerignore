@@ -1,0 +1,25 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Binaries
+tmp/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go test files
+*_test.go
+
+# IDE directories
+.idea/
+.vscode/
+
+# Air live reload
+.air.toml

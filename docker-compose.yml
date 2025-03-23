@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  blog:
+    build: .
+    container_name: go-markdown-blog
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./content:/app/content
+    restart: unless-stopped
