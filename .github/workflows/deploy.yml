@@ -40,9 +40,16 @@ jobs:
       - name: Save Docker image
         run: docker save go-markdown-blog:latest | gzip > go-markdown-blog.tar.gz
       
-      - name: Copy Docker image to DigitalOcean Droplet
+      - name: Copy Docker image and content to DigitalOcean Droplet
         run: |
+          # Copy Docker image
           scp -o StrictHostKeyChecking=no go-markdown-blog.tar.gz ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }}:/tmp/
+          
+          # Create a tarball of the content directory
+          tar -czf content.tar.gz content/
+          
+          # Copy content to Droplet
+          scp -o StrictHostKeyChecking=no content.tar.gz ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }}:/tmp/
       
       - name: Deploy on DigitalOcean Droplet
         uses: appleboy/ssh-action@v1.0.0
@@ -53,6 +60,14 @@ jobs:
           script: |
             # Load the Docker image
             docker load < /tmp/go-markdown-blog.tar.gz
+            
+            # Extract content to the mounted directory
+            mkdir -p /opt/blog/content
+            tar -xzf /tmp/content.tar.gz -C /opt/blog
+            
+            # Ensure proper permissions
+            chown -R root:root /opt/blog/content
+            chmod -R 755 /opt/blog/content
             
             # Stop and remove the existing container if it exists
             docker stop go-markdown-blog || true
@@ -68,3 +83,4 @@ jobs:
             
             # Clean up
             rm /tmp/go-markdown-blog.tar.gz
+            rm /tmp/content.tar.gz
