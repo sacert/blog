@@ -1,3 +1,30 @@
+## Testing
+
+The blog includes a comprehensive testing suite with unit tests, integration tests, and benchmarks.
+
+### Running Tests
+
+```bash
+# Run all tests
+make test
+
+# Run tests with code coverage
+make test-coverage
+
+# Run only unit tests (skip integration tests)
+make test-short
+
+# Run benchmarks
+make benchmark
+```
+
+### Test Structure
+
+- **Unit Tests**: Test individual components in isolation
+- **Integration Tests**: Test the entire application workflow
+- **Benchmarks**: Measure performance of critical functions
+- **Test Coverage**: Generate reports to identify untested code
+
 ## Deployment to DigitalOcean
 
 This project includes a GitHub Actions workflow to deploy to a DigitalOcean Droplet.
@@ -42,6 +69,7 @@ A simple blog built with Go that uses Markdown files for blog posts. Features ta
 - 🏷️ Tag support for categorizing posts
 - 🐳 Docker support for easy deployment
 - 🛠️ GitHub Actions workflow for automated deployment
+- 🧪 Comprehensive testing suite
 - 🎨 Responsive design
 - 🚀 Fast and lightweight
 
@@ -80,6 +108,13 @@ blog/
 │   └── workflows/      # GitHub Actions workflows
 │       └── deploy.yml   # Deployment workflow
 ├── content/           # Markdown blog posts
+├── handlers/          # HTTP request handlers
+│   ├── handlers.go     # Handler implementations
+│   └── handlers_test.go # Handler tests
+├── models/            # Data models
+│   ├── post.go         # Post model implementation
+│   ├── post_test.go    # Post model tests
+│   └── testdata/       # Test data for models
 ├── static/            # Static assets (CSS, JS, images)
 │   └── css/
 │       └── style.css
@@ -91,12 +126,15 @@ blog/
 ├── .air.toml          # Configuration for Air (live reloading)
 ├── .dockerignore      # Files to exclude from Docker build
 ├── .gitignore         # Git ignore file
+├── benchmark_test.go  # Performance benchmarks
 ├── dev.sh             # Script to run development server with live reloading
 ├── docker-compose.yml # Docker Compose configuration
 ├── Dockerfile         # Docker build instructions
 ├── droplet-setup.sh   # Script to prepare DigitalOcean Droplet
 ├── go.mod             # Go module file
+├── integration_test.go # Integration tests
 ├── main.go            # Main application file
+├── Makefile           # Build and test automation
 └── README.md          # This file
 ```
 

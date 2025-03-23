@@ -18,6 +18,15 @@ jobs:
         with:
           go-version: '1.21'  # Use the Go version you're developing with
       
+      - name: Download dependencies
+        run: go mod download
+      
+      - name: Run tests
+        run: go test ./... -v
+      
+      - name: Run benchmarks
+        run: go test -bench=. -benchmem
+      
       - name: Build application
         run: go build -o blog-app .
       
