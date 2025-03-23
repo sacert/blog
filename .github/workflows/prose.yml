@@ -1,0 +1,30 @@
+name: Check Prose
+
+on:
+  push:
+    paths:
+      - 'content/**.md'
+  pull_request:
+    paths:
+      - 'content/**.md'
+  workflow_dispatch:
+
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Vale Linting
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: content
+          onlyAnnotateModifiedLines: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Write Good Linting
+        uses: tomwhross/write-good-action@v1.5
+        with:
+          directory: "./content"

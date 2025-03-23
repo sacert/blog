@@ -4,6 +4,8 @@ Tags: welcome, introduction, go, markdown
 
 Welcome to my new blog built with Go and Markdown! This is the first post of many to come.
 
+Purposely add something that is grimatically incorrect, and add a spelling mistakes.
+
 ## Why Go?
 
 Go is a fantastic language for building web applications. Here are a few reasons why I chose Go for this blog:

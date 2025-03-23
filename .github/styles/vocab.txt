@@ -1,0 +1,17 @@
+# Custom vocabulary - add words that should be recognized as correct
+golang
+Go
+Golang
+goroutine
+goroutines
+mdToHTML
+Markdown
+DigitalOcean
+microservices
+templating
+config
+API
+APIs
+kubernetes
+k8s
+dockerfile

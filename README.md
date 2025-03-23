@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/sacert/blog/actions/workflows/test.yml/badge.svg)](https://github.com/sacert/blog/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/sacert/blog/branch/main/graph/badge.svg)](https://codecov.io/gh/sacert/blog)
+[![Prose Check](https://github.com/sacert/blog/actions/workflows/prose.yml/badge.svg)](https://github.com/sacert/blog/actions/workflows/prose.yml)
 
 A simple blog built with Go that uses Markdown files for blog posts. Features tag support and Docker deployment.
 
@@ -11,6 +12,7 @@ A simple blog built with Go that uses Markdown files for blog posts. Features ta
 - 🏠 Home page listing all posts
 - 📄 Individual post pages
 - 🏷️ Tag support for categorizing posts
+- 🔍 Automated spelling and grammar checks
 - 🐳 Docker support for easy deployment
 - 🛠️ GitHub Actions workflow for automated deployment
 - 🧪 Comprehensive testing suite
@@ -210,6 +212,8 @@ The filename (without the `.md` extension) will be used as the URL slug for the 
 - [cosmtrek/air](https://github.com/cosmtrek/air) - Live reload for Go apps (development only)
 - [Docker](https://www.docker.com/) - Container platform (optional)
 - [GitHub Actions](https://github.com/features/actions) - CI/CD platform (optional)
+- [Vale](https://github.com/errata-ai/vale) - Prose linting
+- [write-good](https://github.com/btford/write-good) - English writing style suggestions
 
 ## License
 
