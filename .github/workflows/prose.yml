@@ -4,9 +4,6 @@ on:
   push:
     paths:
       - 'content/**.md'
-  pull_request:
-    paths:
-      - 'content/**.md'
   workflow_dispatch:
 
 jobs:
