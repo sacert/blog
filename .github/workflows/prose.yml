@@ -1,7 +1,7 @@
 name: Check Prose
 
 on:
-  push:
+  pull_request:
     paths:
       - 'content/**.md'
   workflow_dispatch:
