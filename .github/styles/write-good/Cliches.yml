@@ -1,0 +1,20 @@
+extends: existence
+message: "Consider removing the cliché '%s'."
+description: "Clichés weaken your message by relying on overused expressions."
+ignorecase: true
+level: warning
+tokens:
+  - at the end of the day
+  - back to the drawing board
+  - cover all the bases
+  - hit the ground running
+  - in this day and age
+  - low-hanging fruit
+  - outside the box
+  - paradigm shift
+  - reinvent the wheel
+  - think outside the box
+  - touch base
+  - when all is said and done
+  - cut and dry
+  - last but not least

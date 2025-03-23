@@ -1,0 +1,13 @@
+extends: existence
+message: "Don't use '%s' as an annotation."
+description: "Using bare annotations like TODO or FIXME can disrupt the reading flow."
+link: https://errata.ai/vale-prose-linting/
+level: warning
+ignorecase: true
+tokens:
+  - FIXME
+  - TODO
+  - NOTE
+  - XXX
+  - HACK
+  - BUG

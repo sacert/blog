@@ -1,0 +1,34 @@
+extends: existence
+message: "Did you really mean '%s'?"
+level: error
+ignorecase: true
+tokens:
+  - alot
+  - 'and and'
+  - 'are are'
+  - 'cant'
+  - 'didnt'
+  - 'doesnt'
+  - 'dont'
+  - 'enviroment'
+  - 'form from'
+  - 'havent'
+  - 'hes'
+  - 'ive'
+  - 'im'
+  - 'instuctions'
+  - 'incase'
+  - 'its it's'
+  - 'itll'
+  - 'noone'
+  - 'the the'
+  - 'theres'
+  - 'theyre'
+  - 'thats'
+  - 'thier'
+  - 'wont'
+  - 'wasnt'
+  - 'whos'
+  - 'youll'
+  - 'youre'
+  - 'you you'

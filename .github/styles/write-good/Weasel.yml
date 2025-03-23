@@ -1,0 +1,70 @@
+extends: existence
+message: "'%s' is a weasel word."
+description: "Weasel words create a sense of vagueness. Try to be more specific."
+ignorecase: true
+level: suggestion
+tokens:
+  - absolutely
+  - accidentally
+  - additionally
+  - allegedly
+  - arguably
+  - approximately
+  - basically
+  - certainly
+  - clearly
+  - completely
+  - considerably
+  - definitely
+  - effectively
+  - enormously
+  - entirely
+  - especially
+  - essentially
+  - evidently
+  - exactly
+  - explicitly
+  - extremely
+  - fairly
+  - fundamentally
+  - generally
+  - highly
+  - hopefully
+  - hugely
+  - implicitly
+  - importantly
+  - increasingly
+  - incredibly
+  - indeed
+  - inevitably
+  - interestingly
+  - literally
+  - naturally
+  - nearly
+  - necessarily
+  - notably
+  - obviously
+  - particularly
+  - perhaps
+  - possibly
+  - presumably
+  - probably
+  - quite
+  - rather
+  - really
+  - relatively
+  - remarkably
+  - significantly
+  - specifically
+  - substantially
+  - supposedly
+  - surprisingly
+  - totally
+  - truly
+  - typically
+  - ultimately
+  - usually
+  - various
+  - vastly
+  - very
+  - virtually

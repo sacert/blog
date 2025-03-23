@@ -1,0 +1,41 @@
+extends: substitution
+message: "Consider using '%s' instead of '%s'."
+description: "Use simpler expressions to improve readability."
+level: warning
+ignorecase: true
+swap:
+  in order to: to
+  for the purpose of: for
+  in the event that: if
+  subsequent to: after
+  prior to: before
+  at this point in time: now
+  at the present time: now
+  in the near future: soon
+  it is necessary that: must
+  it is important that: must
+  has the capability to: can
+  has the ability to: can
+  in a timely manner: promptly
+  in a timely fashion: promptly
+  in an expeditious manner: quickly
+  on a regular basis: regularly
+  on the grounds that: because
+  due to the fact that: because
+  in light of the fact that: because
+  in view of the fact that: because
+  despite the fact that: although
+  in the process of: during
+  with the exception of: except
+  in excess of: more than
+  in the vicinity of: near
+  a majority of: most
+  a number of: some
+  an adequate number of: enough
+  a sufficient number of: enough
+  a small number of: few
+  in many cases: often
+  in most cases: usually
+  in some cases: sometimes
+  until such time as: until
+  based on the fact that: because
