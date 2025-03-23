@@ -7,23 +7,12 @@
             <time datetime="{{ .PublishDate.Format "2006-01-02" }}">
                 {{ .PublishDate.Format "January 2, 2006" }}
             </time>
-            {{ if .Tags }}
-                <div class="post-tags">
-                    {{ range .Tags }}
-                        <a href="/tag/{{ . }}" class="tag">{{ . }}</a>
-                    {{ end }}
-                </div>
-            {{ end }}
         </div>
     </header>
     
     <div class="post-content">
         {{ .Content }}
     </div>
-    
-    <footer class="post-footer">
-        <a href="/" class="back-link">&larr; Back to posts</a>
-    </footer>
 </article>
 {{ end }}
 {{ end }}

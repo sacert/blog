@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Cousine:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:ital,wght@0,100..900;1,100..900&family=Cabin:ital,wght@0,400..700;1,400..700&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Cousine:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1><a href="/">My Go Markdown Blog</a></h1>
+            <a href="/"></a>
             <nav>
                 <ul>
                     <li><a href="/">Home</a></li>
@@ -23,26 +29,11 @@
         <main class="content">
             {{ template "content" . }}
         </main>
-        
-        <aside class="sidebar">
-            <div class="sidebar-section">
-                <h3>Tags</h3>
-                <div class="tags">
-                    {{ if .AllTags }}
-                        {{ range .AllTags }}
-                            <a href="/tag/{{ . }}" class="tag {{ if eq . $.ActiveTag }}active{{ end }}">{{ . }}</a>
-                        {{ end }}
-                    {{ else }}
-                        <p>No tags found</p>
-                    {{ end }}
-                </div>
-            </div>
-        </aside>
     </div>
     
     <footer>
         <div class="container">
-            <p>&copy; {{ .CurrentYear }} My Go Markdown Blog</p>
+            <p>&copy; {{ .CurrentYear }} Stephen Kang</p>
         </div>
     </footer>
 </body>
