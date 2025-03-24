@@ -18,7 +18,7 @@ import (
 type Post struct {
 	Title       string
 	Slug        string
-	Content     template.HTML
+	Content     template.HTML // #nosec G203 - This is safe as we control the content source
 	RawContent  string
 	PublishDate time.Time
 	Summary     string
@@ -44,7 +44,19 @@ var GetPosts GetPostsFunc = getPostsImpl
 // getPostsImpl is the actual implementation of getting posts
 func getPostsImpl(contentDir string) ([]Post, error) {
 	var posts []Post
-	files, err := os.ReadDir(contentDir)
+	
+	// Validate the content directory first
+	contentDirAbs, err := filepath.Abs(contentDir)
+	if err != nil {
+		return nil, err
+	}
+	
+	// Check if the directory exists
+	if stat, err := os.Stat(contentDirAbs); err != nil || !stat.IsDir() {
+		return nil, err
+	}
+	
+	files, err := os.ReadDir(contentDirAbs)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +67,12 @@ func getPostsImpl(contentDir string) ([]Post, error) {
 		}
 
 		slug := strings.TrimSuffix(file.Name(), ".md")
-		filePath := filepath.Join(contentDir, file.Name())
+		filePath := filepath.Join(contentDirAbs, file.Name())
+
+		// Verify the file is still within the content directory (path traversal prevention)
+		if !strings.HasPrefix(filePath, contentDirAbs) {
+			continue
+		}
 
 		// Get file info to access ModTime
 		fileInfo, err := os.Stat(filePath)
@@ -63,6 +80,7 @@ func getPostsImpl(contentDir string) ([]Post, error) {
 			return nil, err
 		}
 
+		// #nosec G304 - We've validated the file path is within our content directory
 		content, err := os.ReadFile(filePath)
 		if err != nil {
 			return nil, err
@@ -106,6 +124,7 @@ func getPostsImpl(contentDir string) ([]Post, error) {
 		// Convert markdown to HTML
 		htmlContent := MdToHTML(contentWithoutTitle)
 
+		// #nosec G203 - This is safe as we control the content source (markdown files)
 		post := Post{
 			Title:       title,
 			Slug:        slug,

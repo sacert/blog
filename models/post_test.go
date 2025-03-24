@@ -37,15 +37,15 @@ func TestMdToHTML(t *testing.T) {
 			want:     "<h2 id=\"heading\">Heading</h2>\n",
 		},
 		{
-			name: "code block",
+			name:     "code block",
 			markdown: "```go\nfunc test() {\n  fmt.Println(\"hello\")\n}\n```",
 			// Changed to match the actual output of the Markdown renderer
-			want: "<pre><code class=\"language-go\">func test() {\n  fmt.Println(\"hello\")\n}\n</code></pre>\n",
+			want:     "<pre><code class=\"language-go\">func test() {\n  fmt.Println(\"hello\")\n}\n</code></pre>\n",
 		},
 		{
-			name: "list",
+			name:     "list",
 			markdown: "- item 1\n- item 2",
-			want: "<ul>\n<li>item 1</li>\n<li>item 2</li>\n</ul>\n",
+			want:     "<ul>\n<li>item 1</li>\n<li>item 2</li>\n</ul>\n",
 		},
 	}
 
@@ -57,12 +57,12 @@ func TestMdToHTML(t *testing.T) {
 			if tt.name == "code block" {
 				// Check all the essential parts are present
 				if !strings.Contains(got, "<pre>") ||
-				   !strings.Contains(got, "<code") ||
-				   !strings.Contains(got, "language-go") ||
-				   !strings.Contains(got, "func test()") ||
-				   !strings.Contains(got, "fmt.Println") ||
-				   !strings.Contains(got, "</code>") ||
-				   !strings.Contains(got, "</pre>") {
+					!strings.Contains(got, "<code") ||
+					!strings.Contains(got, "language-go") ||
+					!strings.Contains(got, "func test()") ||
+					!strings.Contains(got, "fmt.Println") ||
+					!strings.Contains(got, "</code>") ||
+					!strings.Contains(got, "</pre>") {
 					t.Errorf("MdToHTML() missing expected content.\nGot: %v\nWant to contain: %v", got, tt.want)
 				}
 				return
@@ -86,9 +86,9 @@ func TestGetAllTags(t *testing.T) {
 		want  []string
 	}{
 		{
-			name: "empty posts",
+			name:  "empty posts",
 			posts: []Post{},
-			want: []string{},
+			want:  []string{},
 		},
 		{
 			name: "no tags",

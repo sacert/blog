@@ -22,7 +22,9 @@ func setupTestTemplates(t *testing.T) map[string]*template.Template {
 	
 	// Clean up after the test
 	t.Cleanup(func() {
-		os.RemoveAll(tmpDir)
+		if err := os.RemoveAll(tmpDir); err != nil {
+			t.Logf("Failed to clean up temp dir: %v", err)
+		}
 	})
 	
 	// Create the template files
@@ -31,9 +33,15 @@ func setupTestTemplates(t *testing.T) map[string]*template.Template {
 	postHTML := `{{ define "content" }}{{ range .Posts }}<article><h1>{{ .Title }}</h1><div>{{ .Content }}</div></article>{{ end }}{{ end }}`
 	
 	// Write the template files
-	os.WriteFile(filepath.Join(tmpDir, "base.html"), []byte(baseHTML), 0644)
-	os.WriteFile(filepath.Join(tmpDir, "home.html"), []byte(homeHTML), 0644)
-	os.WriteFile(filepath.Join(tmpDir, "post.html"), []byte(postHTML), 0644)
+	if err := os.WriteFile(filepath.Join(tmpDir, "base.html"), []byte(baseHTML), 0644); err != nil {
+		t.Fatalf("Could not write base template: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(tmpDir, "home.html"), []byte(homeHTML), 0644); err != nil {
+		t.Fatalf("Could not write home template: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(tmpDir, "post.html"), []byte(postHTML), 0644); err != nil {
+		t.Fatalf("Could not write post template: %v", err)
+	}
 	
 	// Parse the templates
 	tmpl := make(map[string]*template.Template)

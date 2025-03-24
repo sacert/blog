@@ -32,7 +32,11 @@ func TestIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to GET: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Logf("Failed to close response body: %v", err)
+		}
+	}()
 	
 	// Check the status code
 	if resp.StatusCode != http.StatusOK {

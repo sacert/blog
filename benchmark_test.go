@@ -80,8 +80,8 @@ func BenchmarkParsePost(b *testing.B) {
 	b.ResetTimer()
 	
 	for i := 0; i < b.N; i++ {
-		// Use the actual implementation for benchmarking
-		models.GetPosts = models.GetPostsFunc(models.GetPosts)
+		// Don't need to cast the function back to itself - remove the unnecessary conversion
+		models.GetPosts = origGetPosts
 		
 		posts, err := models.GetPosts(contentDir)
 		if err != nil {
