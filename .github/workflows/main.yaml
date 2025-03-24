@@ -1,21 +1,51 @@
-name: Deploy to DigitalOcean
+name: Main Workflow
 
 on:
   push:
-     branches:
-       - 'main'
-  workflow_dispatch:    # Allows manual triggering of the workflow
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run linting
+        uses: ./.github/actions/lint
+        with:
+          go-version: '1.21'
+  
   test:
-    uses: ./.github/workflows/tests.yml
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run tests
+        uses: ./.github/actions/test
+        with:
+          go-version: '1.21'
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.html
+      
+      - name: Report coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.out
+          fail_ci_if_error: false
+          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+  
   deploy:
     runs-on: ubuntu-latest
-    needs: test  # Make deploy job dependent on test job
-    
+    needs: [lint, test]  # Make deploy job dependent on lint and test jobs
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,7 +53,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.21'  # Use the Go version you're developing with
+          go-version: '1.21'
       
       - name: Download dependencies
         run: go mod download
