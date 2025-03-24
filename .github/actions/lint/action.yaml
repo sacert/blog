@@ -1,0 +1,44 @@
+name: 'Go Linting'
+description: 'Runs Go linting tools on the codebase'
+
+inputs:
+  go-version:
+    description: 'The Go version to use'
+    required: false
+    default: '1.21'
+  golangci-lint-version:
+    description: 'GolangCI-Lint version to use'
+    required: false
+    default: 'v1.55.2'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ inputs.go-version }}
+    
+    - name: Install golangci-lint
+      run: |
+        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{ inputs.golangci-lint-version }}
+        golangci-lint --version
+      shell: bash
+    
+    - name: Run golangci-lint
+      run: golangci-lint run --timeout=5m
+      shell: bash
+    
+    - name: Run go vet
+      run: go vet ./...
+      shell: bash
+    
+    - name: Check Go formatting
+      run: |
+        if [ -n "$(gofmt -l .)" ]; then
+          echo "The following files are not formatted correctly:"
+          gofmt -l .
+          echo "Run 'gofmt -w .' to fix"
+          exit 1
+        fi
+      shell: bash

@@ -1,0 +1,46 @@
+name: 'Run Go Tests'
+description: 'Runs Go tests with coverage and benchmarks'
+
+inputs:
+  go-version:
+    description: 'The Go version to use'
+    required: false
+    default: '1.21'
+
+outputs:
+  coverage-report:
+    description: 'Path to coverage report'
+    value: ${{ steps.coverage.outputs.report-path }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ inputs.go-version }}
+    
+    - name: Download dependencies
+      run: go mod download
+      shell: bash
+    
+    - name: Run tests with race detection
+      run: go test ./... -v -race
+      shell: bash
+    
+    - name: Run tests with coverage
+      run: |
+        go test ./... -coverprofile=coverage.out -covermode=atomic
+        go tool cover -func=coverage.out
+      shell: bash
+    
+    - name: Generate HTML coverage report
+      id: coverage
+      run: |
+        go tool cover -html=coverage.out -o coverage.html
+        echo "report-path=coverage.html" >> $GITHUB_OUTPUT
+      shell: bash
+    
+    - name: Run benchmarks
+      run: go test -bench=. -benchmem
+      shell: bash
