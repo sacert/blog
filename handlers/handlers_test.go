@@ -19,19 +19,19 @@ func setupTestTemplates(t *testing.T) map[string]*template.Template {
 	if err != nil {
 		t.Fatalf("Could not create temp dir: %v", err)
 	}
-	
+
 	// Clean up after the test
 	t.Cleanup(func() {
 		if err := os.RemoveAll(tmpDir); err != nil {
 			t.Logf("Failed to clean up temp dir: %v", err)
 		}
 	})
-	
+
 	// Create the template files
 	baseHTML := `{{ define "base" }}<!DOCTYPE html><html><head><title>{{.Title}}</title></head><body>{{template "content" .}}</body></html>{{ end }}`
 	homeHTML := `{{ define "content" }}<h1>Posts</h1><div class="posts">{{ range .Posts }}<div class="post"><h2>{{ .Title }}</h2></div>{{ end }}</div>{{ end }}`
 	postHTML := `{{ define "content" }}{{ range .Posts }}<article><h1>{{ .Title }}</h1><div>{{ .Content }}</div></article>{{ end }}{{ end }}`
-	
+
 	// Write the template files
 	if err := os.WriteFile(filepath.Join(tmpDir, "base.html"), []byte(baseHTML), 0644); err != nil {
 		t.Fatalf("Could not write base template: %v", err)
@@ -42,12 +42,12 @@ func setupTestTemplates(t *testing.T) map[string]*template.Template {
 	if err := os.WriteFile(filepath.Join(tmpDir, "post.html"), []byte(postHTML), 0644); err != nil {
 		t.Fatalf("Could not write post template: %v", err)
 	}
-	
+
 	// Parse the templates
 	tmpl := make(map[string]*template.Template)
 	tmpl["home"] = template.Must(template.ParseFiles(filepath.Join(tmpDir, "base.html"), filepath.Join(tmpDir, "home.html")))
 	tmpl["post"] = template.Must(template.ParseFiles(filepath.Join(tmpDir, "base.html"), filepath.Join(tmpDir, "post.html")))
-	
+
 	return tmpl
 }
 
@@ -78,39 +78,39 @@ func TestListPosts(t *testing.T) {
 	// Save the original function and restore it after the test
 	origGetPosts := models.GetPosts
 	defer func() { models.GetPosts = origGetPosts }()
-	
+
 	// Override GetPosts to use mock data
 	models.GetPosts = func(string) ([]models.Post, error) {
 		return createMockPosts(), nil
 	}
-	
+
 	tmpl := setupTestTemplates(t)
-	
+
 	h := &BlogHandler{
 		ContentDir: "testdir",
 		Templates:  tmpl,
 	}
-	
+
 	// Create a request to pass to our handler
 	req, err := http.NewRequest("GET", "/", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	// Create a ResponseRecorder to record the response
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(h.ListPosts)
-	
+
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder
 	handler.ServeHTTP(rr, req)
-	
+
 	// Check the status code
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
-	
+
 	// Check that the response body contains the post titles
 	if body := rr.Body.String(); !contains(body, "Test Post 1") || !contains(body, "Test Post 2") {
 		t.Errorf("handler returned unexpected body: got %v", body)
@@ -121,53 +121,53 @@ func TestShowPost(t *testing.T) {
 	// Save the original function and restore it after the test
 	origGetPosts := models.GetPosts
 	defer func() { models.GetPosts = origGetPosts }()
-	
+
 	// Override GetPosts to use mock data
 	models.GetPosts = func(string) ([]models.Post, error) {
 		return createMockPosts(), nil
 	}
-	
+
 	tmpl := setupTestTemplates(t)
-	
+
 	h := &BlogHandler{
 		ContentDir: "testdir",
 		Templates:  tmpl,
 	}
-	
+
 	// Create a request to pass to our handler
 	req, err := http.NewRequest("GET", "/post/test-post-1", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	// Create a ResponseRecorder to record the response
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(h.ShowPost)
-	
+
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder
 	handler.ServeHTTP(rr, req)
-	
+
 	// Check the status code
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
-	
+
 	// Check that the response body contains the post title
 	if body := rr.Body.String(); !contains(body, "Test Post 1") {
 		t.Errorf("handler returned unexpected body: got %v", body)
 	}
-	
+
 	// Test non-existent post
 	req, err = http.NewRequest("GET", "/post/non-existent", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	rr = httptest.NewRecorder()
 	handler.ServeHTTP(rr, req)
-	
+
 	// Check the status code - should be Not Found
 	if status := rr.Code; status != http.StatusNotFound {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -179,44 +179,44 @@ func TestHandleTag(t *testing.T) {
 	// Save the original function and restore it after the test
 	origGetPosts := models.GetPosts
 	defer func() { models.GetPosts = origGetPosts }()
-	
+
 	// Override GetPosts to use mock data
 	models.GetPosts = func(string) ([]models.Post, error) {
 		return createMockPosts(), nil
 	}
-	
+
 	tmpl := setupTestTemplates(t)
-	
+
 	h := &BlogHandler{
 		ContentDir: "testdir",
 		Templates:  tmpl,
 	}
-	
+
 	// Create a request to pass to our handler
 	req, err := http.NewRequest("GET", "/tag/tag1", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	// Create a ResponseRecorder to record the response
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(h.HandleTag)
-	
+
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder
 	handler.ServeHTTP(rr, req)
-	
+
 	// Check the status code
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
-	
+
 	// Check that the response body contains the post with tag1
 	if body := rr.Body.String(); !contains(body, "Test Post 1") {
 		t.Errorf("handler returned unexpected body: got %v", body)
 	}
-	
+
 	// Check that it doesn't contain the post without tag1
 	if body := rr.Body.String(); contains(body, "Test Post 2") {
 		t.Errorf("handler incorrectly included post without the tag")

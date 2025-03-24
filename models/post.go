@@ -44,18 +44,19 @@ var GetPosts GetPostsFunc = getPostsImpl
 // getPostsImpl is the actual implementation of getting posts
 func getPostsImpl(contentDir string) ([]Post, error) {
 	var posts []Post
-	
+
 	// Validate the content directory first
 	contentDirAbs, err := filepath.Abs(contentDir)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Check if the directory exists
-	if stat, err := os.Stat(contentDirAbs); err != nil || !stat.IsDir() {
-		return nil, err
+	fileInfo, dirErr := os.Stat(contentDirAbs)
+	if dirErr != nil || !fileInfo.IsDir() {
+		return nil, dirErr
 	}
-	
+
 	files, err := os.ReadDir(contentDirAbs)
 	if err != nil {
 		return nil, err
