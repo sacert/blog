@@ -1,7 +1,5 @@
 # Welcome to My Go Markdown Blog
 
-Tags: welcome, introduction, go, markdown
-
 Welcome to my new blog built with Go and Markdown! This is the first post of many to come.
 
 ## Why Go?

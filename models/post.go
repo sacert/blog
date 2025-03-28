@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 	"time"
 
@@ -21,7 +20,6 @@ type Post struct {
 	RawContent  string
 	PublishDate time.Time
 	Summary     string
-	Tags        []string
 }
 
 // BlogData represents data passed to templates
@@ -29,8 +27,6 @@ type BlogData struct {
 	Posts       []Post
 	Title       string
 	CurrentYear int
-	AllTags     []string
-	ActiveTag   string
 }
 
 // GetPostsFunc defines the function signature for getting posts
@@ -88,25 +84,6 @@ func getPostsImpl(contentDir string) ([]Post, error) {
 
 		markdownContent := string(content)
 
-		// Extract tags if they exist (format: "Tags: tag1, tag2, tag3")
-		var tags []string
-		tagsRegex := regexp.MustCompile(`(?m)^Tags:\s*(.*?)$`)
-		tagsMatch := tagsRegex.FindStringSubmatch(markdownContent)
-
-		if len(tagsMatch) > 1 {
-			// Remove the tags line from content
-			markdownContent = tagsRegex.ReplaceAllString(markdownContent, "")
-
-			// Process tags
-			tagList := strings.Split(tagsMatch[1], ",")
-			for _, tag := range tagList {
-				tag = strings.TrimSpace(tag)
-				if tag != "" {
-					tags = append(tags, tag)
-				}
-			}
-		}
-
 		// Extract title from first line
 		lines := strings.SplitN(markdownContent, "\n", 3)
 		title := strings.TrimPrefix(lines[0], "# ")
@@ -132,7 +109,6 @@ func getPostsImpl(contentDir string) ([]Post, error) {
 			RawContent:  contentWithoutTitle,
 			PublishDate: fileInfo.ModTime(),
 			Summary:     summary,
-			Tags:        tags,
 		}
 
 		posts = append(posts, post)

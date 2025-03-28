@@ -24,7 +24,6 @@ func main() {
 	// Set up routes
 	http.HandleFunc("/", blogHandler.ListPosts)
 	http.HandleFunc("/post/", blogHandler.ShowPost)
-	http.HandleFunc("/tag/", blogHandler.HandleTag)
 
 	// Create a server with timeouts
 	server := &http.Server{

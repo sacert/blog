@@ -3,14 +3,13 @@
 [![Build Status](https://github.com/sacert/blog/actions/workflows/test.yml/badge.svg)](https://github.com/sacert/blog/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/sacert/blog/branch/main/graph/badge.svg)](https://codecov.io/gh/sacert/blog)
 
-A simple blog built with Go that uses Markdown files for blog posts. Features tag support and Docker deployment.
+A simple blog built with Go that uses Markdown files for blog posts. Features Docker deployment.
 
 ## Features
 
 - 📝 Markdown content for easy writing
 - 🏠 Home page listing all posts
 - 📄 Individual post pages
-- 🏷️ Tag support for categorizing posts
 - 🐳 Docker support for easy deployment
 - 🛠️ GitHub Actions workflow for automated deployment
 - 🧪 Comprehensive testing suite
@@ -180,14 +179,10 @@ The blog will be available at http://localhost:8080
 
 Create new `.md` files in the `content` directory. The first line of each file should be a level 1 heading (`# Title`) which will be used as the post title.
 
-To add tags to a post, include a line with the format `Tags: tag1, tag2, tag3` right after the title.
-
 Example:
 
 ```markdown
 # My New Post
-
-Tags: golang, tutorial, web
 
 This is the content of my new post.
 
