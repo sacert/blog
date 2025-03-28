@@ -46,14 +46,10 @@ func (h *BlogHandler) ListPosts(w http.ResponseWriter, r *http.Request) {
 		return posts[i].PublishDate.After(posts[j].PublishDate)
 	})
 
-	// Get all unique tags
-	allTags := models.GetAllTags(posts)
-
 	data := models.BlogData{
 		Posts:       posts,
 		Title:       "My Go Markdown Blog",
 		CurrentYear: time.Now().Year(),
-		AllTags:     allTags,
 	}
 
 	err = h.Templates["home"].ExecuteTemplate(w, "base", data)
@@ -87,64 +83,13 @@ func (h *BlogHandler) ShowPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	allTags := models.GetAllTags(posts)
-
 	data := models.BlogData{
 		Posts:       []models.Post{post},
 		Title:       post.Title + " - My Go Markdown Blog",
 		CurrentYear: time.Now().Year(),
-		AllTags:     allTags,
 	}
 
 	err = h.Templates["post"].ExecuteTemplate(w, "base", data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
-// HandleTag handles filtering posts by tag
-func (h *BlogHandler) HandleTag(w http.ResponseWriter, r *http.Request) {
-	tag := strings.TrimPrefix(r.URL.Path, "/tag/")
-	tag = strings.TrimSpace(tag)
-
-	if tag == "" {
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
-
-	posts, err := models.GetPosts(h.ContentDir)
-	if err != nil {
-		http.Error(w, "Error reading posts", http.StatusInternalServerError)
-		return
-	}
-
-	// Filter posts by tag
-	var filteredPosts []models.Post
-	for _, post := range posts {
-		for _, postTag := range post.Tags {
-			if strings.EqualFold(postTag, tag) {
-				filteredPosts = append(filteredPosts, post)
-				break
-			}
-		}
-	}
-
-	// Sort posts by date (newest first)
-	sort.Slice(filteredPosts, func(i, j int) bool {
-		return filteredPosts[i].PublishDate.After(filteredPosts[j].PublishDate)
-	})
-
-	allTags := models.GetAllTags(posts)
-
-	data := models.BlogData{
-		Posts:       filteredPosts,
-		Title:       "Posts tagged '" + tag + "' - My Go Markdown Blog",
-		CurrentYear: time.Now().Year(),
-		AllTags:     allTags,
-		ActiveTag:   tag,
-	}
-
-	err = h.Templates["home"].ExecuteTemplate(w, "base", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

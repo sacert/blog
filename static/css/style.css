@@ -1,8 +1,6 @@
 /* Base Styles */
 :root {
     --primary-color: #3498db;
-    --tag-color: #2980b9;
-    --tag-hover-color: #1c638f;
     --text-color: #333;
     --bg-color: #fff;
     --light-gray: #f4f4f4;
@@ -64,40 +62,6 @@ body {
     margin-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.5rem;
-}
-
-/* Tags */
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.tag {
-    display: inline-block;
-    background-color: var(--tag-color);
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    font-size: 0.8rem;
-    text-decoration: none;
-    transition: background-color 0.2s;
-}
-
-.tag:hover {
-    background-color: var(--tag-hover-color);
-}
-
-.tag.active {
-    background-color: var(--tag-hover-color);
-    font-weight: bold;
-}
-
-.post-tags {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-left: 1rem;
 }
 
 /* Header */

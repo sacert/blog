@@ -1,7 +1,6 @@
 package models
 
 import (
-	"reflect"
 	"regexp"
 	"strings"
 	"testing"
@@ -79,94 +78,6 @@ func TestMdToHTML(t *testing.T) {
 	}
 }
 
-func TestGetAllTags(t *testing.T) {
-	tests := []struct {
-		name  string
-		posts []Post
-		want  []string
-	}{
-		{
-			name:  "empty posts",
-			posts: []Post{},
-			want:  []string{},
-		},
-		{
-			name: "no tags",
-			posts: []Post{
-				{Title: "Post 1", Tags: []string{}},
-				{Title: "Post 2", Tags: []string{}},
-			},
-			want: []string{},
-		},
-		{
-			name: "with tags",
-			posts: []Post{
-				{Title: "Post 1", Tags: []string{"tag1", "tag2"}},
-				{Title: "Post 2", Tags: []string{"tag2", "tag3"}},
-				{Title: "Post 3", Tags: []string{"tag1", "tag3"}},
-			},
-			want: []string{"tag1", "tag2", "tag3"},
-		},
-		{
-			name: "case insensitive",
-			posts: []Post{
-				{Title: "Post 1", Tags: []string{"Tag1", "TAG2"}},
-				{Title: "Post 2", Tags: []string{"tag2", "Tag3"}},
-			},
-			want: []string{"Tag1", "TAG2", "Tag3"},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := GetAllTags(tt.posts)
-
-			// Case-insensitive comparison for tags
-			if tt.name == "case insensitive" {
-				gotLower := make(map[string]bool)
-				for _, tag := range got {
-					gotLower[strings.ToLower(tag)] = true
-				}
-
-				wantLower := make(map[string]bool)
-				for _, tag := range tt.want {
-					wantLower[strings.ToLower(tag)] = true
-				}
-
-				if len(gotLower) != len(wantLower) {
-					t.Errorf("GetAllTags() got %v elements, want %v elements", len(gotLower), len(wantLower))
-					return
-				}
-
-				for tag := range wantLower {
-					if !gotLower[tag] {
-						t.Errorf("GetAllTags() missing tag %v (lowercase)", tag)
-					}
-				}
-				return
-			}
-
-			// Standard comparison for other tests
-			if len(got) != len(tt.want) {
-				t.Errorf("GetAllTags() got %v elements, want %v elements", len(got), len(tt.want))
-				return
-			}
-
-			// Sort both slices for comparison
-			gotMap := make(map[string]bool)
-			for _, tag := range got {
-				gotMap[tag] = true
-			}
-
-			for _, tag := range tt.want {
-				if !gotMap[tag] {
-					t.Errorf("GetAllTags() missing tag %v", tag)
-				}
-			}
-		})
-	}
-}
-
 func TestGetPosts(t *testing.T) {
 	// Save the original function and restore it after the test
 	origGetPosts := GetPosts
@@ -177,23 +88,20 @@ func TestGetPosts(t *testing.T) {
 
 	// Test with actual files in testdata directory
 	posts, err := GetPosts("testdata")
-
 	if err != nil {
 		t.Fatalf("GetPosts() error = %v", err)
 	}
 
-	if len(posts) != 2 {
-		t.Errorf("GetPosts() got %v posts, want 2", len(posts))
+	if len(posts) != 1 {
+		t.Errorf("GetPosts() got %v posts, want 1", len(posts))
 	}
 
 	// Check if we have the expected posts
-	var testPost, noTagsPost *Post
+	var testPost *Post
 
 	for i := range posts {
 		if posts[i].Slug == "test-post" {
 			testPost = &posts[i]
-		} else if posts[i].Slug == "no-tags-post" {
-			noTagsPost = &posts[i]
 		}
 	}
 
@@ -206,25 +114,7 @@ func TestGetPosts(t *testing.T) {
 		t.Errorf("Test post title = %v, want %v", testPost.Title, "Test Post Title")
 	}
 
-	expectedTags := []string{"test", "markdown", "unit-test"}
-	if !reflect.DeepEqual(testPost.Tags, expectedTags) {
-		t.Errorf("Test post tags = %v, want %v", testPost.Tags, expectedTags)
-	}
-
 	if !strings.Contains(string(testPost.Content), "<h2") {
 		t.Errorf("Test post content doesn't contain expected HTML")
-	}
-
-	// Check the no-tags post
-	if noTagsPost == nil {
-		t.Fatalf("Expected to find no-tags-post.md")
-	}
-
-	if noTagsPost.Title != "Post Without Tags" {
-		t.Errorf("No-tags post title = %v, want %v", noTagsPost.Title, "Post Without Tags")
-	}
-
-	if len(noTagsPost.Tags) != 0 {
-		t.Errorf("No-tags post should have 0 tags, got %v", len(noTagsPost.Tags))
 	}
 }

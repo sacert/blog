@@ -1,7 +1,5 @@
 # Test Post Title
 
-Tags: test, markdown, unit-test
-
 This is a test post for unit testing.
 
 ## Test Heading
