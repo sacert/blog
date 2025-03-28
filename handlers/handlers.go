@@ -46,14 +46,10 @@ func (h *BlogHandler) ListPosts(w http.ResponseWriter, r *http.Request) {
 		return posts[i].PublishDate.After(posts[j].PublishDate)
 	})
 
-	// Get all unique tags
-	allTags := models.GetAllTags(posts)
-
 	data := models.BlogData{
 		Posts:       posts,
 		Title:       "My Go Markdown Blog",
 		CurrentYear: time.Now().Year(),
-		AllTags:     allTags,
 	}
 
 	err = h.Templates["home"].ExecuteTemplate(w, "base", data)
@@ -87,13 +83,10 @@ func (h *BlogHandler) ShowPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	allTags := models.GetAllTags(posts)
-
 	data := models.BlogData{
 		Posts:       []models.Post{post},
 		Title:       post.Title + " - My Go Markdown Blog",
 		CurrentYear: time.Now().Year(),
-		AllTags:     allTags,
 	}
 
 	err = h.Templates["post"].ExecuteTemplate(w, "base", data)
@@ -134,13 +127,10 @@ func (h *BlogHandler) HandleTag(w http.ResponseWriter, r *http.Request) {
 		return filteredPosts[i].PublishDate.After(filteredPosts[j].PublishDate)
 	})
 
-	allTags := models.GetAllTags(posts)
-
 	data := models.BlogData{
 		Posts:       filteredPosts,
 		Title:       "Posts tagged '" + tag + "' - My Go Markdown Blog",
 		CurrentYear: time.Now().Year(),
-		AllTags:     allTags,
 		ActiveTag:   tag,
 	}
 

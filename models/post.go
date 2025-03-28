@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"sort"
 	"strings"
 	"time"
 
@@ -158,32 +157,4 @@ func MdToHTML(md string) string {
 
 	// Convert to HTML
 	return string(markdown.Render(doc, renderer))
-}
-
-// GetAllTags returns all unique tags from posts
-func GetAllTags(posts []Post) []string {
-	// Use a map to ensure uniqueness
-	// The key is the lowercase version of the tag, the value is the original case version
-	tagsMap := make(map[string]string)
-
-	for _, post := range posts {
-		for _, tag := range post.Tags {
-			lowerTag := strings.ToLower(tag)
-			// If we already have this tag, preserve the first case we saw
-			if _, exists := tagsMap[lowerTag]; !exists {
-				tagsMap[lowerTag] = tag
-			}
-		}
-	}
-
-	// Convert map values to slice
-	var tags []string
-	for _, originalTag := range tagsMap {
-		tags = append(tags, originalTag)
-	}
-
-	// Sort tags alphabetically
-	sort.Strings(tags)
-
-	return tags
 }

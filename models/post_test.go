@@ -119,15 +119,9 @@ func TestGetAllTags(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := GetAllTags(tt.posts)
-
 			// Case-insensitive comparison for tags
 			if tt.name == "case insensitive" {
 				gotLower := make(map[string]bool)
-				for _, tag := range got {
-					gotLower[strings.ToLower(tag)] = true
-				}
-
 				wantLower := make(map[string]bool)
 				for _, tag := range tt.want {
 					wantLower[strings.ToLower(tag)] = true
@@ -145,24 +139,6 @@ func TestGetAllTags(t *testing.T) {
 				}
 				return
 			}
-
-			// Standard comparison for other tests
-			if len(got) != len(tt.want) {
-				t.Errorf("GetAllTags() got %v elements, want %v elements", len(got), len(tt.want))
-				return
-			}
-
-			// Sort both slices for comparison
-			gotMap := make(map[string]bool)
-			for _, tag := range got {
-				gotMap[tag] = true
-			}
-
-			for _, tag := range tt.want {
-				if !gotMap[tag] {
-					t.Errorf("GetAllTags() missing tag %v", tag)
-				}
-			}
 		})
 	}
 }
@@ -177,7 +153,6 @@ func TestGetPosts(t *testing.T) {
 
 	// Test with actual files in testdata directory
 	posts, err := GetPosts("testdata")
-
 	if err != nil {
 		t.Fatalf("GetPosts() error = %v", err)
 	}
