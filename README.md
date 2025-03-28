@@ -1,7 +1,6 @@
 # Go Markdown Blog
 
 [![Build Status](https://github.com/sacert/blog/actions/workflows/test.yml/badge.svg)](https://github.com/sacert/blog/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/sacert/blog/branch/main/graph/badge.svg)](https://codecov.io/gh/sacert/blog)
 
 A simple blog built with Go that uses Markdown files for blog posts. Features tag support and Docker deployment.
 
