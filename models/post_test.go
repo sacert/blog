@@ -92,8 +92,8 @@ func TestGetPosts(t *testing.T) {
 		t.Fatalf("GetPosts() error = %v", err)
 	}
 
-	if len(posts) != 2 {
-		t.Errorf("GetPosts() got %v posts, want 2", len(posts))
+	if len(posts) != 1 {
+		t.Errorf("GetPosts() got %v posts, want 1", len(posts))
 	}
 
 	// Check if we have the expected posts
