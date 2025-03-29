@@ -34,14 +34,6 @@ jobs:
         with:
           name: coverage-report
           path: coverage.html
-      
-      - name: Report coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage.out
-          fail_ci_if_error: false
-          verbose: true
-          token: ${{ secrets.CODECOV_TOKEN }}
   
   deploy:
     runs-on: ubuntu-latest
